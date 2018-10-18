@@ -142,22 +142,22 @@ void noise_suppression(char *in_file, char *out_file) {
     }
 }
 
-int main(int argc, char *argv[]) {
-    printf("WebRtc Noise Suppression\n");
-    printf("blog:http://cpuimage.cnblogs.com/\n");
-    if (argc < 2)
-        return -1;
-    char *in_file = argv[1];
-    char drive[3];
-    char dir[256];
-    char fname[256];
-    char ext[256];
-    char out_file[1024];
-    splitpath(in_file, drive, dir, fname, ext);
-    sprintf(out_file, "%s%s%s_out%s", drive, dir, fname, ext);
-    noise_suppression(in_file, out_file);
+// int main(int argc, char *argv[]) {
+    // printf("WebRtc Noise Suppression\n");
+    // printf("blog:http://cpuimage.cnblogs.com/\n");
+    // if (argc < 2)
+        // return -1;
+    // char *in_file = argv[1];
+    // char drive[3];
+    // char dir[256];
+    // char fname[256];
+    // char ext[256];
+    // char out_file[1024];
+    // splitpath(in_file, drive, dir, fname, ext);
+    // sprintf(out_file, "%s%s%s_out%s", drive, dir, fname, ext);
+    // noise_suppression(in_file, out_file);
 
-    printf("press any key to exit. \n");
-    getchar();
-    return 0;
-}
+    // printf("press any key to exit. \n");
+    // getchar();
+    // return 0;
+// }
