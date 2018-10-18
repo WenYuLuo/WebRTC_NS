@@ -754,19 +754,22 @@ static void set_feature_extraction_parameters(NoiseSuppressionC *self) {
 }
 
 // Initialize state.
-int WebRtcNs_InitCore(NoiseSuppressionC *self, uint32_t fs) {
-    int i;
-    // Check for valid pointer.
-    if (self == NULL) {
-        return -1;
-    }
+int WebRtcNs_InitCore(NoiseSuppressionC *self, uint32_t fs)
+{
+	int i;
+	// Check for valid pointer.
+	if (self == NULL)
+	{
+		return -1;
+	}
 
-    // Initialization of struct.
-    if (fs == 8000 || fs == 16000 || fs == 32000 || fs == 48000 || fs == 44100) {
+	// Initialization of struct.
+	//if (fs == 8000 || fs == 16000 || fs == 32000 || fs == 48000 || fs == 44100 || fs == 22050)
+	//{
         self->fs = fs;
-    } else {
-        return -1;
-    }
+    //} else {
+    //    return -1;
+    //}
     self->windShift = 0;
     // We only support 10ms frames.
     if (fs == 8000) {
