@@ -17,11 +17,11 @@
 #endif
 
 //写wav文件
-void wavWrite_int16(char *filename, int16_t *buffer, size_t sampleRate, size_t totalSampleCount) {
-    drwav_data_format format = {};
+void wavWrite_int16(char *filename, int16_t *buffer, size_t sampleRate, unsigned int channels, size_t totalSampleCount) {
+    drwav_data_format format = {0};
     format.container = drwav_container_riff;     // <-- drwav_container_riff = normal WAV files, drwav_container_w64 = Sony Wave64.
     format.format = DR_WAVE_FORMAT_PCM;          // <-- Any of the DR_WAVE_FORMAT_* codes.
-    format.channels = 1;
+    format.channels = channels;
     format.sampleRate = (drwav_uint32) sampleRate;
     format.bitsPerSample = 16;
     drwav *pWav = drwav_open_file_write(filename, &format);
@@ -36,9 +36,9 @@ void wavWrite_int16(char *filename, int16_t *buffer, size_t sampleRate, size_t t
 }
 
 //读取wav文件
-int16_t *wavRead_int16(char *filename, uint32_t *sampleRate, uint64_t *totalSampleCount) {
-    unsigned int channels;
-    int16_t *buffer = drwav_open_and_read_file_s16(filename, &channels, sampleRate, totalSampleCount);
+int16_t *wavRead_int16(char *filename, uint32_t *sampleRate, unsigned int* channels, uint64_t *totalSampleCount) {
+    /*unsigned int channels;*/
+    int16_t *buffer = drwav_open_and_read_file_s16(filename, channels, sampleRate, totalSampleCount);
     if (buffer == nullptr) {
         printf("ERROR.");
     }
@@ -129,7 +129,8 @@ void noise_suppression(char *in_file, char *out_file) {
     uint32_t sampleRate = 0;
     //总音频采样数
     uint64_t inSampleCount = 0;
-    int16_t *inBuffer = wavRead_int16(in_file, &sampleRate, &inSampleCount);
+	unsigned int channels = 0;
+    int16_t *inBuffer = wavRead_int16(in_file, &sampleRate, &channels, &inSampleCount);
 
     //如果加载成功
     if (inBuffer != nullptr) {
@@ -137,7 +138,7 @@ void noise_suppression(char *in_file, char *out_file) {
         nsProcess(inBuffer, sampleRate, inSampleCount, kModerate);
         double time_interval = calcElapsed(startTime, now());
         printf("time interval: %d ms\n ", (int) (time_interval * 1000));
-        wavWrite_int16(out_file, inBuffer, sampleRate, inSampleCount);
+        wavWrite_int16(out_file, inBuffer, sampleRate, channels, inSampleCount);
         free(inBuffer);
     }
 }
